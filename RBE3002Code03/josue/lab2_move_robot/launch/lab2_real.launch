@@ -1,0 +1,26 @@
+<!--
+This launch file runs the lab2 real robot, Rviz enviorment, and launches the specified scripts.
+-->
+<launch>
+  <!--
+  The following launches the real robot
+  -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+
+  <!--
+  The following code launches Rviz enviorment (Note: if the robot is not running the robot model in Rviz will have tranform errors since it is not recieveing any odom messages)
+  -->
+  <param name="tb3_model" value="$(arg model)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0" />
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot3_fake)/rviz/turtlebot3_fake.rviz"/>
+
+  <!--
+  The following code launches the lab 2 node Robot.py (drivestraight, rotate, etc.)
+  The format is pkg=package_name name=give_any_name type=python_node_name
+  -->
+  <node pkg="lab2_move_robot" name="lab2_move_robot" type="Robot.py"/>
+
+</launch>

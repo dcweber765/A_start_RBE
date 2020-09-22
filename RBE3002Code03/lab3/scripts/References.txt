@@ -1,0 +1,14 @@
+|||||||||||||||||||||||
+||REFERENCES FOR LAB3||
+|||||||||||||||||||||||
+
+1) The following website was used to implement the A* algorithm in python:
+    https://www.redblobgames.com/pathfinding/a-star/introduction.html
+    -The team got a better understanding through this interactive website on
+    how the different path searching algorithms worked. Most importantly the A*
+    algorithm were a dictionary of tuples was created. This dictionary is calculated
+    using the net cost of the heuristics h(n) and g(n). The dictionaries key is the
+    is the parent of the value. The keys and values are tuples of x and y positions
+    of the nodes (grid cells in this case).
+
+2) We also used the template provided by the RBE3002 lab3 github repo.

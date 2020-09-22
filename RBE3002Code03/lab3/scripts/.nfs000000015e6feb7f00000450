@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+
+from nav_msgs.msg import GetPlan, Path
+from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
+from A_Star import *
+
+import rospy, tf
+from tf.transformations import euler_from_quaternion
+
+def handle_a_star(req):
+    start = (req.start.pose.position.x, req.start.pose.position.y)
+    end = (req.goal.pose.position.x, req.goal.pose.position.y)
+
+    robotPath = Path()
+    astar = A_Star()
+
+    while astar.start == None or astar.goal == None:
+        #wait for start and end points
+        pass
+
+    tuple_dict = astar.a_star(astar.start, astar.goal)
+    tuple_list = astar.reconstruct_path(astar.start, astar.goal, tuple_dict)
+    # tuple_list = astar.optimize_path(tuple_list)
+    print(tuple_list)
+
+    for point in points:
+        poses = PoseStamped()
+        
+    robotPath.poses = list_poses
+
+    return robotPath
+
+
+def a_star_server():
+    rospy.init_node('a_star_server')
+
+    aStarService = rospy.Service('a_star', GetPlan, handle_a_star)
+
+
+    print "Ready to do the A_Star"
+    rospy.spin()
+
+if __name__ == "__main__":
+    a_star_server()

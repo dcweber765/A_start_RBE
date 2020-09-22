@@ -1,0 +1,66 @@
+<!--
+This launch file runs the lab2 empty gazebo world, Robot.py node, and the Rviz enviorment
+-->
+<launch>
+
+  <!--
+  A) This runs the Gazebo simulator
+  -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="x_pos" default="3.0"/>
+  <arg name="y_pos" default="3.0"/>
+  <arg name="z_pos" default="0.0"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find turtlebot3_gazebo)/worlds/empty.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find turtlebot3_description)/urdf/turtlebot3_$(arg model).urdf.xacro" />
+
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model turtlebot3_burger -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" />
+
+  <param name="tb3_model" value="$(arg model)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0" />
+  </node>
+  <!--
+  B) This runs the rviz enviorment with the configuration file
+  command line: rosrun rviz rviz -d `rospack find lab3`/config/lab3_simple.rviz
+  -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lab3)/config/lab3-usethis.rviz"/>
+
+  <!--
+  C) This runs the map server
+  command line: rosrun map_server map_server ~/catkin_ws/src/lab3/maps/simple_map/simple_map.yaml
+  -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find lab3)/maps/simple_map/simple_map.yaml"/>
+
+  <!--
+  E)This runs the turtlebot3 launch file
+  command line: roslaunch turtlebot3_bringup turtlebot3_model.launch
+  -->
+  <!--
+  <include file="$(find turtlebot3_bringup)/launch/includes/description.launch.xml">
+    <arg name="model" value="$(arg model)" />
+  </include>
+``-->
+
+  <!--
+  F) This runs the scripts for lab3
+  The format is pkg=package_name name=give_any_name type=python_node_name
+  -->
+  <!--
+  <node pkg="lab3" name="lab3_client" type="lab3_client.py" output="screen"/>
+  -->
+  <!--
+  G) This runs the Service call node
+  -->
+  <!--
+  <node pkg="lab3" name="lab3_server" type="A_Star.py" output="screen"/>
+  -->
+
+</launch>
